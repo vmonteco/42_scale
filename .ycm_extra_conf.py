@@ -90,6 +90,8 @@ flags = [
 '-fno-stack-protector',
 '-nostdlib',
 '-nodefaultlibs',
+'-I', 'inc',
+'-I', 'inc/nuklear'
 ]
 
 
