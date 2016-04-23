@@ -91,7 +91,8 @@ flags = [
 '-nostdlib',
 '-nodefaultlibs',
 '-I', 'inc',
-'-I', 'inc/nuklear'
+'-I', 'inc/nuklear',
+'-I', './libs/libyaml/include'
 ]
 
 
