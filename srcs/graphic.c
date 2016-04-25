@@ -33,14 +33,16 @@ struct		device {
 	GLuint						font_tex;
 };
 
-static void text_input(GLFWwindow *win, unsigned int codepoint)
-{nk_input_unicode((struct nk_context*)glfwGetWindowUserPointer(win), codepoint);}
-static void scroll_input(GLFWwindow *win, double _, double yoff)
-{UNUSED(_);nk_input_scroll((struct nk_context*)glfwGetWindowUserPointer(win), (float)yoff);}
+static void text_input(GLFWwindow *win, unsigned int codepoint) {
+	nk_input_unicode((struct nk_context*)glfwGetWindowUserPointer(win), codepoint);
+}
 
-	static void
-device_init(struct device *dev)
-{
+static void scroll_input(GLFWwindow *win, double _, double yoff) {
+	UNUSED(_);
+	nk_input_scroll((struct nk_context*)glfwGetWindowUserPointer(win), (float)yoff);
+}
+
+static void device_init(struct device *dev) {
 	GLint status;
 	static const GLchar *vertex_shader =
 		NK_SHADER_VERSION
@@ -100,15 +102,12 @@ device_init(struct device *dev)
 		glGenBuffers(1, &dev->vbo);
 		glGenBuffers(1, &dev->ebo);
 		glGenVertexArrays(1, &dev->vao);
-
 		glBindVertexArray(dev->vao);
 		glBindBuffer(GL_ARRAY_BUFFER, dev->vbo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, dev->ebo);
-
 		glEnableVertexAttribArray((GLuint)dev->attrib_pos);
 		glEnableVertexAttribArray((GLuint)dev->attrib_uv);
 		glEnableVertexAttribArray((GLuint)dev->attrib_col);
-
 		glVertexAttribPointer((GLuint)dev->attrib_pos, 2, GL_FLOAT, GL_FALSE, vs, (void*)vp);
 		glVertexAttribPointer((GLuint)dev->attrib_uv, 2, GL_FLOAT, GL_FALSE, vs, (void*)vt);
 		glVertexAttribPointer((GLuint)dev->attrib_col, 4, GL_UNSIGNED_BYTE, GL_TRUE, vs, (void*)vc);
@@ -120,9 +119,7 @@ device_init(struct device *dev)
 	glBindVertexArray(0);
 }
 
-	static void
-device_upload_atlas(struct device *dev, const void *image, int width, int height)
-{
+static void device_upload_atlas(struct device *dev, const void *image, int width, int height) {
 	glGenTextures(1, &dev->font_tex);
 	glBindTexture(GL_TEXTURE_2D, dev->font_tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -131,9 +128,7 @@ device_upload_atlas(struct device *dev, const void *image, int width, int height
 			GL_RGBA, GL_UNSIGNED_BYTE, image);
 }
 
-	static void
-device_shutdown(struct device *dev)
-{
+static void device_shutdown(struct device *dev) {
 	glDetachShader(dev->prog, dev->vert_shdr);
 	glDetachShader(dev->prog, dev->frag_shdr);
 	glDeleteShader(dev->vert_shdr);
@@ -145,10 +140,8 @@ device_shutdown(struct device *dev)
 	nk_buffer_free(&dev->cmds);
 }
 
-	static void
-device_draw(struct device *dev, struct nk_context *ctx, int width, int height,
-		enum nk_anti_aliasing AA)
-{
+static void device_draw(struct device *dev, struct nk_context *ctx, int width, int height,
+		enum nk_anti_aliasing AA) {
 	GLint last_prog, last_tex;
 	GLint last_ebo, last_vbo, last_vao;
 	GLfloat ortho[4][4] = {
