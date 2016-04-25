@@ -7,6 +7,7 @@ void	read_base_infos(yaml_parser_t *parser, scale *res) {
 
 	token.type = YAML_STREAM_START_TOKEN;
 	res->sections = 0x0;
+	res->is_primary.bol = true;
 	while (token.type != YAML_STREAM_END_TOKEN) {
 		if (!yaml_parser_scan(parser, &token)) {
 			ERROR("YAML parser error ! Error value: (%d)", parser->error);
@@ -17,7 +18,7 @@ void	read_base_infos(yaml_parser_t *parser, scale *res) {
 			cur = 2;
 		} else if (token.type == YAML_SCALAR_TOKEN) {
 			if (cur == 1) {
-				key = m_strcpy(token);
+				key = m_strcpy(token).buf;
 			} else {
 				if (!strcmp(key, "name"))
 					res->name = m_strcpy(token);
@@ -30,16 +31,18 @@ void	read_base_infos(yaml_parser_t *parser, scale *res) {
 				else if (!strcmp(key, "guidelines_md"))
 					res->guidelines = m_strcpy(token);
 				else if (!strcmp(key, "lang")) {
-					tmp = m_strcpy(token);
+					tmp = m_strcpy(token).buf;
 					if (!strcmp(tmp, "en"))
-						res->lang = LANG_EN;
+						res->lang.val = LANG_EN;
 					else if (!strcmp(tmp, "fr"))
-						res->lang = LANG_FR;
+						res->lang.val = LANG_FR;
 					else if (!strcmp(tmp, "ru"))
-						res->lang = LANG_RU;
+						res->lang.val = LANG_RU;
 					free(tmp);
 				} else if (!strcmp(key, "correction_number")) {
-					res->correction_n = atoi((char *)token.data.scalar.value);
+					res->correction_n.val = atoi((char *)token.data.scalar.value);
+				} else if (!strcmp(key, "duration")) {
+					res->duration.val = atoi((char *)token.data.scalar.value);
 				}
 				free(key);
 				key = 0x0;
@@ -58,13 +61,17 @@ void	read_base_infos(yaml_parser_t *parser, scale *res) {
 void	read_skills(yaml_parser_t *parser, scale_questions *question) {
 	yaml_token_t	token;
 	scale_skills	*sk, *it;
-	int				cur = 0, ct = 0;
+	int				cur = 0, ct = 0, j;
 	char			*key = 0x0, *tmp = 0x0;
+	const char		*skills[] = {"Adaptation & Creativity", "Algorithms & AI", "Company experience", "DB & Data",
+						"Functionnal programming", "Graphics", "Group & interpersonal", "Imperative programming",
+						"Network & system administration", "Object-oriented programming",
+						"Organization", "Parallel computing", "Rigor", "Security", "Technology integration", "Unix", "Web"};
+
 
 	token.type = YAML_STREAM_START_TOKEN;
 	sk = malloc(sizeof(scale_skills));
 	sk->next = 0x0;
-	(void)question;
 	while (token.type != YAML_STREAM_END_TOKEN) {
 		if (!yaml_parser_scan(parser, &token)) {
 			ERROR("YAML parser error ! Error value: (%d)", parser->error);
@@ -75,13 +82,15 @@ void	read_skills(yaml_parser_t *parser, scale_questions *question) {
 			cur = 2;
 		} else if (token.type == YAML_SCALAR_TOKEN) {
 			if (cur == 1) {
-				key = m_strcpy(token);
+				key = m_strcpy(token).buf;
 			} else {
 				if (!strcmp(key, "name")) {
 					sk->name = m_strcpy(token);
+					for (j = 0; strcmp(sk->name.buf, skills[j]) && skills[j]; j++);
+					sk->name.val = j;
 				} else if (!strcmp(key, "percentage")) {
-					tmp = m_strcpy(token);
-					sk->percent = atoi(tmp);
+					tmp = m_strcpy(token).buf;
+					sk->percent.val = atoi(tmp);
 					free(tmp);
 				}
 			}
@@ -112,6 +121,7 @@ void	read_questions(yaml_parser_t *parser, scale_sections *sec) {
 
 	question = malloc(sizeof(scale_questions));
 	question->next = 0x0;
+	question->skills = 0x0;
 	token.type = YAML_STREAM_START_TOKEN;
 	while (token.type != YAML_STREAM_END_TOKEN) {
 		if (!yaml_parser_scan(parser, &token)) {
@@ -123,7 +133,7 @@ void	read_questions(yaml_parser_t *parser, scale_sections *sec) {
 			cur = 2;
 		} else if (token.type == YAML_SCALAR_TOKEN) {
 			if (cur == 1) {
-				key = m_strcpy(token);
+				key = m_strcpy(token).buf;
 				if (!strcmp(key, "questions_skills")) {
 					read_skills(parser, question);
 					if (!sec->questions) {
@@ -134,6 +144,7 @@ void	read_questions(yaml_parser_t *parser, scale_sections *sec) {
 					}
 					question = malloc(sizeof(scale_questions));
 					question->next = 0x0;
+					question->skills = 0x0;
 				}
 			} else {
 				if (!strcmp(key, "name"))
@@ -141,18 +152,18 @@ void	read_questions(yaml_parser_t *parser, scale_sections *sec) {
 				else if (!strcmp(key, "guidelines"))
 					question->guidelines = m_strcpy(token);
 				else if (!strcmp(key, "rating")) {
-					tmp = m_strcpy(token);
+					tmp = m_strcpy(token).buf;
 					if (!strcmp(tmp, "bool"))
-						question->rating = R_BOOL;
+						question->rating.val = R_BOOL;
 					else if (!strcmp(tmp, "multi"))
-						question->rating = R_MULTI;
+						question->rating.val = R_MULTI;
 					free(tmp);
 				} else if (!strcmp(key, "kind")) {
-					tmp = m_strcpy(token);
+					tmp = m_strcpy(token).buf;
 					if (!strcmp(tmp, "standard"))
-						question->kind = R_STAND;
+						question->kind.val = R_STAND;
 					else if (!strcmp(tmp, "bonus"))
-						question->kind = R_BONUS;
+						question->kind.val = R_BONUS;
 				}
 				free(key);
 			}
@@ -186,7 +197,7 @@ void	read_sections(yaml_parser_t *parser, scale *res) {
 			cur = 2;
 		} else if (token.type == YAML_SCALAR_TOKEN) {
 			if (cur == 1) {
-				key = m_strcpy(token);
+				key = m_strcpy(token).buf;
 				if (!strcmp(key, "questions")) {
 					read_questions(parser, sec);
 					if (!res->sections) {
@@ -229,7 +240,7 @@ scale	*read_scale(FILE *fd) {
 	}
 	read_base_infos(&parser, res);
 	read_sections(&parser, res);
-	scale_debug(res);
+	/*scale_debug(res);*/
 	yaml_parser_delete(&parser);
 	fclose(fd);
 	return res;

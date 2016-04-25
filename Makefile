@@ -1,8 +1,8 @@
 NAME =		42_scale
 CC = 		gcc
-CFLAGS = 	-Wall -Wextra -Werror -g -O2 -std=c99 -rdynamic
+CFLAGS = 	-g -O2 -std=c99 -rdynamic
 
-INCS = 		-I inc/ -I inc/nuklear/ -I ~/.brew/include
+INCS = 		-I inc/ -I inc/nuklear/ -I ~/.brew/include -I ./libs/libyaml/include/
 SRCS = 		$(wildcard srcs/*.c)
 OBJS =		$(SRCS:%.c=%.o)
 
@@ -11,7 +11,8 @@ ifeq ($(UNAME_S),Darwin)
 	LIBS = -lglfw3 -framework OpenGL -lm -lGLEW
 	LIBS_DIR =	-L ~/.brew/lib
 else
-   LIBS = -lglfw -lGL -lm -lGLU -lGLEW
+	LIBS = -lglfw -lGL -lm -lGLU -lGLEW -lyaml 
+	LIBS_DIR = -L ./libs/libyaml/src/.libs/
 endif
 
 
