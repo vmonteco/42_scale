@@ -9,6 +9,7 @@ void	print_trace(void) {
 	size = backtrace(array, 10);
 	strings = backtrace_symbols(array, size);
 	printf("\033[0;31m> \033[0mPrinting backtrace ...\n\e[37m");
+#ifndef __APPLE__
 	for (size_t i = 0; i < size; i++) {
 		for (j = 0; strings[i][j] && strings[i][j] != '('; j++);
 		if (j > f_tab)
@@ -37,6 +38,10 @@ void	print_trace(void) {
 		write(1, "\n", 1);
 	}
 	free(strings);
+#else
+	for (size_t i = 0; i < size; i++)
+		printf("%s\n", strings[i]);
+#endif
 	printf("\033[0m");
 }
 

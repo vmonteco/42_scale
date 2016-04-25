@@ -8,8 +8,8 @@ OBJS =		$(SRCS:%.c=%.o)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
-	LIBS = -lglfw3 -framework OpenGL -lm -lGLEW
-	LIBS_DIR =	-L ~/.brew/lib
+	LIBS = -lglfw3 -framework OpenGL -lm -lGLEW -lyaml
+	LIBS_DIR =	-L ~/.brew/lib -L ./libs/libyaml/src/.libs 
 else
 	LIBS = -lglfw -lGL -lm -lGLU -lGLEW -lyaml 
 	LIBS_DIR = -L ./libs/libyaml/src/.libs/

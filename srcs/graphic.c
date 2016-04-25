@@ -323,7 +323,7 @@ void	handle_window(scale *s, struct nk_context *ctx) {
 	int					w_flag = NK_WINDOW_TITLE | NK_WINDOW_BORDER |
 					NK_WINDOW_CLOSABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE;
 
-	if (nk_begin(ctx, &layout, "Main", nk_rect(10, 10, 600, WINDOW_HEIGHT * 1.5), w_flag)) {
+	if (nk_begin(ctx, &layout, "Main", nk_rect(10, 10, 600, 900), w_flag)) {
 		nk_layout_row(ctx, NK_STATIC, 25, 2, ratio);
 		nk_label(ctx, "Subject name", NK_TEXT_LEFT);
 		nk_edit_string(ctx, NK_EDIT_FIELD, s->name.buf, &s->name.len, 64, nk_filter_default);
@@ -359,7 +359,7 @@ void	handle_window(scale *s, struct nk_context *ctx) {
 	if (!new_section) {
 		new_section = malloc(64);
 	}
-	if (nk_begin(ctx, &layout, "Sections", nk_rect(620, 10, 600, WINDOW_HEIGHT * 1.5), w_flag)) {
+	if (nk_begin(ctx, &layout, "Sections", nk_rect(620, 10, 600, 900), w_flag)) {
 		nk_layout_row(ctx, NK_STATIC, 25, 2, ratio);
 		active = nk_edit_string(ctx, NK_EDIT_FIELD|NK_EDIT_SIG_ENTER, new_section, &ns_len, 64,  nk_filter_ascii);
 		if (nk_button_label(ctx, "Add a Section", NK_BUTTON_DEFAULT) || (active & NK_EDIT_COMMITED)) {

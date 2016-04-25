@@ -14,8 +14,8 @@
 # include <assert.h>
 
 # define ERROR(...) printf("\033[1;31mFATAL ERROR:\033[0m 42_scale must stop. \n\033[0;31m> Reason: \033[0m"); printf(__VA_ARGS__); print_trace(); _exit(1);
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 600
+# define WINDOW_WIDTH 2240
+# define WINDOW_HEIGHT 1200
 # define MAX_INPUTS 9
 
 enum {
