@@ -30,7 +30,7 @@ void	read_base_infos(yaml_parser_t *parser, scale *res) {
 					res->disclaimer = m_strcpy(token);
 				else if (!strcmp(key, "guidelines_md"))
 					res->guidelines = m_strcpy(token);
-				else if (!strcmp(key, "lang")) {
+				else if (!strcmp(key, "lg")) {
 					tmp = m_strcpy(token).buf;
 					if (!strcmp(tmp, "en"))
 						res->lang.val = LANG_EN;

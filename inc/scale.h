@@ -75,6 +75,7 @@ struct		s_sections {
 };
 
 struct		s_scale {
+	char				*o_file;
 	scale_entry			name; // Name of the subject
 	scale_entry			lang; // Language of the scale (Enum value LANG_*)
 	scale_entry			comment; // Comment about the scale
@@ -105,5 +106,8 @@ scale	*read_scale(FILE *fd);
 
 /* GRAPHIC (graphic.c) */
 void	window(scale *s);
+
+/* SAVE (save.c) */
+void	save_scale(scale *s);
 
 #endif

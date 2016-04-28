@@ -310,13 +310,27 @@ void	handle_input(struct nk_context *ctx, GLFWwindow *win) {
 }
 
 void	handle_window(scale *s, struct nk_context *ctx) {
-	struct nk_panel		layout;
+	struct nk_panel		layout, menu;
 	static const float	ratio[] = {120, 150}, ratio2[] = {300, 150};
-	const char				*lang[] = {"English", "French", "LANG_RU"};
+	const char				*lang[] = {"French", "English", "LANG_RU"};
 	int					w_flag = NK_WINDOW_TITLE | NK_WINDOW_BORDER |
 					NK_WINDOW_CLOSABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE;
 
 	if (nk_begin(ctx, &layout, "Main", nk_rect(10, 10, 600, 900), w_flag)) {
+		nk_menubar_begin(ctx);
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 2);
+		nk_layout_row_push(ctx, 45);
+		if (nk_menu_begin_label(ctx, &menu, "Menu", NK_TEXT_LEFT, 120)) {
+			nk_layout_row_dynamic(ctx, 25, 1);
+			if (nk_menu_item_label(ctx, "Save", NK_TEXT_LEFT)) {
+				save_scale(s);
+			}
+			if (nk_menu_item_label(ctx, "Quit", NK_TEXT_LEFT)) {
+				_exit(0);
+			}
+			nk_menu_end(ctx);
+		}
+		nk_menubar_end(ctx);
 		nk_layout_row(ctx, NK_STATIC, 25, 2, ratio);
 		nk_label(ctx, "Subject name", NK_TEXT_LEFT);
 		nk_edit_string(ctx, NK_EDIT_FIELD, s->name.buf, &s->name.len, 64, nk_filter_default);
@@ -349,6 +363,7 @@ void	handle_window(scale *s, struct nk_context *ctx) {
 								"Network & system administration", "Object-oriented programming",
 								"Organization", "Parallel computing", "Rigor", "Security", "Technology integration", "Unix", "Web"};
 	int				j = 0, q = 0, sk_totals_sd[30] = {0}, sk_totals_bs[30] = {0};
+
 	if (!new_section) {
 		new_section = malloc(64);
 	}
