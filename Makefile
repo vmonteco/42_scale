@@ -24,6 +24,13 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(LIBS_DIR) $(LIBS) $(OBJS) -o $(NAME)
 
+install: all
+ifeq ($(UNAME_S),Darwin)
+	cp -v $(NAME) ~/.brew/bin
+else
+	cp -v $(NAME) /usr/bin/.
+endif
+
 clean:
 	rm -f $(OBJS)
 

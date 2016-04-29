@@ -43,3 +43,17 @@ make
 ```
 42_scale ./file.yml
 ```
+
+## Install
+
+### OSX
+```
+make install
+```
+The binary will be copied in ~/.brew/bin
+
+### Linux
+```
+sudo make install
+```
+The binary will be copied in /usr/bin
