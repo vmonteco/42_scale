@@ -63,7 +63,7 @@ void	read_skills(yaml_parser_t *parser, scale_questions *question) {
 	scale_skills	*sk, *it;
 	int				cur = 0, ct = 0, j;
 	char			*key = 0x0, *tmp = 0x0;
-	const char		*skills[] = {"Adaptation & Creativity", "Algorithms & AI", "Company experience", "DB & Data",
+	const char		*skills[] = {"Adaptation & creativity", "Algorithms & AI", "Company experience", "DB & Data",
 						"Functionnal programming", "Graphics", "Group & interpersonal", "Imperative programming",
 						"Network & system administration", "Object-oriented programming",
 						"Organization", "Parallel computing", "Rigor", "Security", "Technology integration", "Unix", "Web"};

@@ -358,7 +358,7 @@ void	handle_window(scale *s, struct nk_context *ctx) {
 	static int		ns_len = 0, nq_len[30], nq_active[30], sk_add[64] = {0};
 	const char				*rating[] = {"Boolean", "Multi"};
 	const char				*kind[] = {"Standard", "Bonus"};
-	const char				*skills[] = {"Adaptation & Creativity", "Algorithms & AI", "Company experience", "DB & Data",
+	const char				*skills[] = {"Adaptation & creativity", "Algorithms & AI", "Company experience", "DB & Data",
 								"Functionnal programming", "Graphics", "Group & interpersonal", "Imperative programming",
 								"Network & system administration", "Object-oriented programming",
 								"Organization", "Parallel computing", "Rigor", "Security", "Technology integration", "Unix", "Web"};
