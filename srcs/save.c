@@ -45,6 +45,11 @@ void	print_sections(scale *s, FILE *fd) {
 	scale_sections		*it;
 	scale_questions		*qt;
 	scale_skills		*sk;
+	const char			*skills[] = {"Adaptation & creativity", "Algorithms & AI", "Company experience", "DB & Data",
+		"Functionnal programming", "Graphics", "Group & interpersonal", "Imperative programming",
+		"Network & system administration", "Object-oriented programming",
+		"Organization", "Parallel computing", "Rigor", "Security", "Technology integration", "Unix", "Web"};
+
 
 	for (it = s->sections; it; it = it->next) {
 		fprintf(fd, "# BEGINNING OF SECTION %s #\n", it->name.buf);
@@ -79,7 +84,7 @@ void	print_sections(scale *s, FILE *fd) {
 			for (sk = qt->skills; sk; sk = sk->next) {
 				write_i(fd, "- percentage", sk->percent.val);
 				tab = 6;
-				write_s(fd, "name", sk->name.buf, 0);
+				write_s(fd, "name", (char *)skills[sk->name.val], 0);
 				tab = 4;
 			}
 		}
