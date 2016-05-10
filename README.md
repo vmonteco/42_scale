@@ -29,10 +29,13 @@ brew install glew glfw3 libyaml
 #### Instructions
 ```
 git clone https://github.com/Ne02ptzero/42_scale
+cd 42_scale
+git submodule init
+git submodule update
 ```
 ##### Linux
 ```
-cd libs/libyaml && ./boostrap && ./configure && make
+cd libs/libyaml && ./bootstrap && ./configure && make
 ```
 #### Compilation
 ```
